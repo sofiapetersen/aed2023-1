@@ -14,6 +14,7 @@ int contaPar(celula *p_ini);
 int contaImpar(celula *p_ini);
 void imprimir(celula *ini);
 void insere(int ns, celula *p);
+celula *apaga(celula *ini);
 
 int main(){
 
@@ -38,6 +39,8 @@ int main(){
 
     printf("\nOs numeros:");
     imprimir(ini);
+
+    apaga(ini);
     return 0;
 }
 
@@ -96,4 +99,14 @@ void imprimir(celula *ini){
     for(p = ini->prox; p != NULL; p = p->prox){
         printf("\n%d", p->n);
     }
+}
+
+celula *apaga(celula *ini){
+    celula *p = ini, *temp = NULL;
+    while(p != NULL){
+        temp = p->prox;
+        free(p);
+        p = temp;
+    }
+    return NULL;
 }
