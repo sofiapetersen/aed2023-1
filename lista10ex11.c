@@ -6,11 +6,11 @@ typedef struct cel{
     char sobrenome[100];
     int matricula;
     int ano;
-    celula *prox;
+    struct cel *prox;
 }celula;
 
 celula *criar();
-void insereFim(char sobrenome, int matricula, int data, celula *p);
+void insereFim(char nomes[100], int matriculas, int datas, celula *p);
 
 int main(){
     int alunos, i, id, nascimento;
@@ -21,15 +21,17 @@ int main(){
     printf("Digite a quantidade de alunos: ");
     scanf("%d", &alunos);
     getchar();
-
     for(i=0;i<alunos;i++){
-        printf("\nSobrenome: ");
+        printf("INSCRICAO DO ALUNO %d\n", i+1);
+        printf("Sobrenome: ");
         gets(nome);
-        getchar();
-        printf("\nMatricula: ");
+        printf("Matricula: ");
         scanf("%d", &id);
-        printf("\nAno de nascimento: ");
+        getchar();
+        printf("Ano de nascimento: ");
         scanf("%d", &nascimento);
+        getchar();
+        printf("\n");
         insereFim(nome, id, nascimento, lista);  
     }
 
@@ -42,7 +44,7 @@ celula *criar(){
     return head;
 }
 
-void insereFim(char nomes, int matriculas, int datas, celula *p){
+void insereFim(char nomes[100], int matriculas, int datas, celula *p){
     celula *nova;
     nova = (celula *)malloc(sizeof(celula));
     strcpy(nova->sobrenome, nomes);
