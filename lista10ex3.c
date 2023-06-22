@@ -38,8 +38,6 @@ int main(){
 
     printf("\nOs numeros:");
     imprimir(ini);
-
-
     return 0;
 }
 
