@@ -92,8 +92,8 @@ void imprimir(celula *lista){
     celula *p;
     int i=0;
     for(p = lista->prox; p != NULL; p = p->prox, i++){
-        printf("CIDADE %d", i);
-        printf("\nNome: %s ", p->cidade);
+        printf("\nCIDADE %d", i);
+        printf("\n%s ", p->cidade);
         printf("(%d, %d)", p->pontos.x, p->pontos.y);
         printf("\n");
     }
@@ -104,7 +104,7 @@ float distancia(int cidade1, int cidade2, celula *lista){
     float distancia;
     celula *p, *q;
     for(p = lista->prox; p != NULL && i != cidade1; p = p->prox, i++);
-    for(p = lista->prox; p != NULL && j != cidade2; p = p->prox, j++);
+    for(q = lista->prox; q != NULL && j != cidade2; q = q->prox, j++);
 
     distancia = sqrt(pow(p->pontos.x - q->pontos.x, 2) + pow(p->pontos.y - q->pontos.y, 2));
     return distancia;
