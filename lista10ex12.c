@@ -16,10 +16,12 @@ void inserir(int codigo, char nome[50], int estoque, float valor, celula *lista)
 void imprimir(celula *lista);
 int valorAlto(celula *lista);
 void imprimirAlto(int produto, celula *lista);
+int EstoqueMaior(celula *lista);
+celula *apaga(celula *lista);
 
 int main(){
 
-    int menu, id, qntd, maisCaro;
+    int menu, id, qntd, maisCaro, maiorEstoque;
     float preco;
     char produto[500];
 
@@ -54,6 +56,16 @@ do{
         maisCaro = valorAlto(lista);
         printf("\nO produto com valor mais alto eh: ");
         imprimirAlto(maisCaro, lista);
+        break;
+
+        case 4:
+        maiorEstoque = EstoqueMaior(lista);
+        printf("\nO produto com maior estoque eh: ");
+        imprimirAlto(maiorEstoque, lista);
+        break;
+
+        case 5:
+        apaga(lista);
         break;
     }
 
@@ -118,4 +130,26 @@ void imprimirAlto(int produto, celula *lista){
     printf("\nEstoque: %d unidades", p->estoque);
     printf("\nValor: %.2f", p->valor);
     printf("\n");
+}
+
+int EstoqueMaior(celula *lista){
+    celula *p;
+    int i=-1, estoque=0;
+    for(p = lista->prox; p != NULL; p = p->prox){
+        if(p->estoque > estoque){
+            estoque = p->estoque;
+            i++;
+        }
+    }
+    return i;
+}
+
+celula *apaga(celula *lista){
+    celula *p = lista, *temp = NULL;
+    while(p!=NULL){
+        temp = p->prox;
+        free(p);
+        p = temp;
+    }
+    return NULL;
 }
