@@ -15,6 +15,7 @@ celula *criar();
 void inserir(int codigo, char nome[50], int estoque, float valor, celula *lista);
 void imprimir(celula *lista);
 int valorAlto(celula *lista);
+void imprimirAlto(int produto, celula *lista);
 
 int main(){
 
@@ -31,6 +32,7 @@ do{
 
     switch(menu){
         case 1:
+        printf("\n");
         printf("Codigo: ");
         scanf("%d", &id);
         getchar();
@@ -50,7 +52,8 @@ do{
 
         case 3:
         maisCaro = valorAlto(lista);
-        printf("O produto com valor mais alto eh: codigo %d", maisCaro);
+        printf("\nO produto com valor mais alto eh: ");
+        imprimirAlto(maisCaro, lista);
         break;
     }
 
@@ -97,10 +100,22 @@ int valorAlto(celula *lista){
     celula *p;
     int i=-1;
     float preco=0;
-    for(p = lista->prox; p != NULL; p = p->prox);
+    for(p = lista->prox; p != NULL; p = p->prox){
         if(p->valor > preco){
             preco = p->valor;
             i++;
         }
+    }
     return i;
+}
+
+void imprimirAlto(int produto, celula *lista){
+    int i=0;
+    celula *p;
+    for(p = lista->prox; p != NULL && i != produto; p = p->prox, i++);
+    printf("\nProduto: %s", p->nome);
+    printf("\nCodigo: %d", p->codigo);
+    printf("\nEstoque: %d unidades", p->estoque);
+    printf("\nValor: %.2f", p->valor);
+    printf("\n");
 }
