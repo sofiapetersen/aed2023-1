@@ -27,21 +27,19 @@ else{
     return 0;
 }
 
-struct ListNode *create(){
-    struct ListNode *head, *tail;
-    head = (struct ListNode*)malloc(sizeof(struct ListNode));
-    head->next = NULL;
-    tail = head;
+struct ListNode* create() {
+    struct ListNode* head = NULL;
+    struct ListNode* tail = NULL;
 
     int value;
-    while(1){
+    while (1) {
         printf("Type one number (-1 to stop): ");
         scanf("%d", &value);
         if (value == -1)
-        break;
+            break;
 
- struct ListNode *new = (struct ListNode*)malloc(sizeof(struct ListNode)); //alocando proximo nó
-       new->val = value;
+        struct ListNode* new = (struct ListNode*)malloc(sizeof(struct ListNode));
+        new->val = value;
         new->next = NULL;
 
         if (head == NULL) {
@@ -54,7 +52,8 @@ struct ListNode *create(){
     }
 
     return head;
-    }
+}
+
 
 bool isPalindrome(struct ListNode* head){
         struct ListNode *slow = head, *fast = head, *prev, *temp;
