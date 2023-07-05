@@ -23,13 +23,13 @@ The total cost is 6.*/
 #include <stdio.h>
 #include <stdlib.h>
 
-int minCostClimbingStairs(int* cost, int costSize);
-int minCost(int a, int b);
+int MinCostClimbingStairs( int* cost, int costSize );
+int MinCost( int a, int b );
 
 
 int main(){
     int size=10, total;
-    int *cost = (int*)malloc(size*(sizeof(int)));
+    int *cost = ( int* )malloc( size * ( sizeof ( int )));
     cost[0] = 1;
     cost[1] = 100;
     cost[2] = 1;
@@ -40,34 +40,34 @@ int main(){
     cost[7] = 1;
     cost[8] = 100;
     cost[9] = 1;
-    total = minCostClimbingStairs(cost, size);
-    printf("%d", total);
+    total = minCostClimbingStairs( cost, size );
+    printf( "%d", total );
 
-    free(cost);
+    free( cost );
 
 return 0;
 }
 
 
 
-int minCostClimbingStairs(int* cost, int costSize){
+int MinCostClimbingStairs( int* cost, int costSize ){
     int i, result=0;
-    int *dp = (int*)malloc((costSize + 1) * sizeof(int));  //criacao de um dinamico e cada dp[i] tem o custo minimo pra chegar na posicao i da escada
+    int *dp = ( int* )malloc(( costSize + 1 ) * sizeof( int ));  //criacao de um dinamico e cada dp[i] tem o custo minimo pra chegar na posicao i da escada
     dp[0] = 0;
     dp[1] = 0;
     //tanto o 0 e o 1 nao tem custo pq n precisa gastar pra comecar
 
-    for(i=2; i <= costSize; i++){        // percorrendo o vetor | i começa em 2 pq ele compara os dois anteriores
-        dp[i] = minCost(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]); //pegando os dois valores e passando pra comparação
+    for( i=2; i <= costSize; i++ ){        // percorrendo o vetor | i começa em 2 pq ele compara os dois anteriores
+        dp[i] = MinCost( dp[i-1] + cost[i-1], dp[i-2] + cost[i-2] ); //pegando os dois valores e passando pra comparação
             // como pode subir 1 ou 2 degraus, ele compara qual tem custo mais baixo, entre o custo de subir e o custo da posicao
             // ai vai somando e quando chegar no ultimo vetor, que no caso eh o costSize vai ter a soma dos custos
     }
 
     result = dp[costSize];
-    free(dp);
+    free( dp );
     return result;
 }
 
-int minCost(int a, int b){
+int MinCost( int a, int b ){
     return a < b ? a : b;       // versao reduzida de if (a<b) return a; else return b;
 }
