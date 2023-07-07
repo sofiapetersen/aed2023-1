@@ -51,7 +51,7 @@ bool judgeCircle( char * moves ){
     Coord coord;
     coord.x = 0;
     coord.y=0;
-    for ( i = 0; i < strlen(moves); i++ ){
+    for ( i = 0; i < (int)strlen(moves); i++ ){
         if( moves[i] == 'U' ){
             coord.y++;
         }
