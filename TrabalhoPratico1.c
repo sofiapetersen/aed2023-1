@@ -24,29 +24,29 @@ char *shortestCompletingWord( char *licensePlate, char **words, int wordsSize ){
     //pesquisei pra ver no license se eh numero ou caracter, e como transformar tudo em minuscula
 
 
-    for (int i = 0; i < (int)strlen(licensePlate); i++) {
-        if (isalpha(licensePlate[i])) {      //se for letra
-            countLicensePlate[tolower(licensePlate[i]) - 'a']++;    //transformar em minuscula
+    for (int i = 0; i < ( int )strlen( licensePlate ); i++) {
+        if ( isalpha( licensePlate[i] ) ) {      //se for letra
+            countLicensePlate[tolower( licensePlate[i] ) - 'a']++;    //transformar em minuscula
 
         }
         
-          for (int i = 0; i < wordsSize; i++) {
+          for ( int i = 0; i < wordsSize; i++ ) {
             int countWord[26] = {0};        //pra contar os aparecer de cada caracter em words
-            for (int j = 0; j < (int)strlen(words[i]); j++) {
-                 if (isalpha(words[i][j])) {
-                countWord[tolower(words[i][j]) - 'a']++;    //transformando todas as letras das words em minusculas
+            for ( int j = 0; j < ( int )strlen( words[i] ); j++ ) {
+                 if ( isalpha( words[i][j] ) ) {
+                countWord[tolower( words[i][j] ) - 'a']++;    //transformando todas as letras das words em minusculas
                 }
             }
             int valid = 1;
-            for (int k = 0; k < 26; k++) {    // percorre as duas arrays
-                if (countLicensePlate[k] > countWord[k]) {
+            for ( int k = 0; k < 26; k++ ) {    // percorre as duas arrays
+                if ( countLicensePlate[k] > countWord[k] ) {
                     valid = 0;
                     break;
                 }
             }
                 // ai fez aqui ver se a palavra tem todos os caracteres que license tá pedindo
 
-        if (valid && (shortWord == NULL || strlen(words[i]) < strlen(shortWord))) {
+        if ( valid && ( shortWord == NULL || strlen( words[i] ) < strlen( shortWord ) ) ) {
             shortWord = words[i];
         }
             // entao se a word que ta vendo tiver os caracteres e for a mais curta, shortWord vai receber essa word e vai ser retornada
