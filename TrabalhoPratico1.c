@@ -6,13 +6,9 @@ char *shortestCompletingWord( char *licensePlate, char **words, int wordsSize );
 
 int main(){
 
-    char licensePlate[] = "1s3 PSt", *words[4], finalWord[10];
-    words[0] = "step";
-    words[1] = "steps";
-    words[2] = "stripe";
-    words[3] = "stepple";
+    char licensePlate[] = "1s3 PSt", *words[4] = {"step", "steps", "stripe", "stepple"}, finalWord[10];
 
-    int size = 8;
+    int size = 4;
 
     finalWord[10] = shortestCompletingWord( licensePlate, words, size );
     printf( "The shortest is: %s", finalWord );
