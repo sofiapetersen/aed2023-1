@@ -59,3 +59,5 @@ void Pop ( stack_t *stack, student_t *student ){
     *student = stack->students[stack->top];
 
 }
+
+
