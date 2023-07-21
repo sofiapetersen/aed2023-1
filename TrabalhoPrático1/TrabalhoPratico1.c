@@ -7,8 +7,8 @@ char *shortestCompletingWord( char *licensePlate, char **words, int wordsSize );
 
 int main(){
 
-    char licensePlate[] = "sofia14";
-    char *words[4] = {"filosofia", "sociologia", "fisica", "artes"};
+    char licensePlate[] = "1s3 PSt";
+    char *words[4] = {"step", "steps", "stripe", "stepple"};
     int size = 4;
 
     char *finalWord = shortestCompletingWord( licensePlate, words, size );
