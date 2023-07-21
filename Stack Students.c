@@ -25,17 +25,18 @@ bool Clear ( stack_t *stack );
 bool Push ( stack_t *stack, student_t *item );
 void Pop ( stack_t *stack, student_t **student );
 void ShowStack ( stack_t *stack );
+void PopByName ( stack_t *stack, const char *name );
 
 
 int main(){
 
     int menu, age;
-    char name[100];
+    char name[100], nameRemove[100];
     stack_t stack;
     Reset(&stack);       //inicializar a pilha
 
     do{
-    printf( "\n----MENU----\n1-Add Student\n2-Delet from Top\n3-Delet Name\n4-Show Students\n5-Clear Stack\n6-Leave\nChoose option: " );
+    printf( "\n----MENU----\n1-Add Student\n2-Remove from Top\n3-Remove Name\n4-Show Students\n5-Clear Stack\n6-Leave\nChoose option: " );
     scanf( "%d", &menu );
     getchar();
 
@@ -54,22 +55,49 @@ int main(){
         break;
 
         case 2:
-        printf("\n----DELETE----\n");
+        printf("\n----REMOVE----\n");
         if(stack.top > 0){
             student_t *topStudent;      
             Pop( &stack, &topStudent );
             free(topStudent);
-            printf("\nTop student deleted\n");
+            printf("\nTop student deleted!\n");
         }else{
-            printf("\nStack is already empty\n");
+            printf("\nStack is already empty!\n");
         }
         break;
 
         case 3:
-
-
+        printf( "----REMOVE BY NAME----\nStudent: " );
+        gets( nameRemove );
+        nameRemove[ strcspn( nameRemove, "\n" ) ] = '\0';
+        PopByName( &stack, nameRemove);
+        printf( "\nStudent %s was removed!\n", nameRemove);
+        break;
+    
         case 4:
         ShowStack(&stack);
+        break;
+
+        case 5:
+        if( stack.top != 0 ){
+        while ( !Clear(&stack) ){
+        student_t *tempStudent;
+        Pop( &stack, &tempStudent );
+        free( tempStudent );
+        }
+        printf( "\nThe stack is empty now!\n" );
+        } else{
+            printf( "\nThe stack is already empty\n" );
+        }
+        break;
+
+        case 6:
+        while ( !Clear(&stack) ){
+        student_t *tempStudent;
+        Pop( &stack, &tempStudent );
+        free( tempStudent );
+        }
+        printf( "Exiting Stack..." );
         break;
     }
 
@@ -128,19 +156,26 @@ void PopByName ( stack_t *stack, const char *name ){
     stack_t tempStack;
     Reset( &tempStack ); //pra poder inicializar essa pilha temporaria
 
-    while( !Clear ( stack ) ){       //pra percorrer a pilha enqt procura o nome
+    while ( !Clear( stack ) ){       //pra percorrer a pilha enqt procura o nome
         student_t *tempStudent;
-        Pop(stack, &tempStudent);
-        if( ( tempStudent->name, name ) != 0 ){
-            Push( stack, tempStudent ); //coloca na pilha temporaria pq nao eh o nome que quero remover ainda
+        Pop( stack, &tempStudent );     // tira da pilha original
+        if( strcmp( tempStudent->name, name ) != 0 ){   //compara o nome da pilha com o nome que quero remover
+            Push( &tempStack, tempStudent ); //coloca na pilha temporaria pq nao eh o nome que quero remover ainda
+           printf( "\nTEMP:\n" ); //so pra ver qq ta acontecendo
+           ShowStack( &tempStack );
         } else{
-            free(tempStudent);  //significa que achou e ta liberando
+            free( tempStudent );  //significa que achou e ta liberando
+            break;      //quebra o looping pq ja achei e deletei oq eu queria
         }
     }
     
-    while(!Clear( tempStack ) ){        //até a pilha ficar vazia
+    while( !Clear( &tempStack ) ){        //até a pilha temporaria ficar vazia
         student_t *tempStudent;     //cria de novo pra poder trocar de uma pilha pra outra
-        Push(tempStack, tempStudent);
+        Pop( &tempStack, &tempStudent );    //tira da pilha temporaria
+        Push( stack, tempStudent );     // coloca na pilha original
+        free( tempStudent );        //libera o espaço
+        printf( "\nORIG:\n" );  //so pra ver qq ta acontecendo
+        ShowStack( stack );
     }
 
 }
