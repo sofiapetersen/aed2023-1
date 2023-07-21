@@ -161,8 +161,8 @@ void PopByName ( stack_t *stack, const char *name ){
         Pop( stack, &tempStudent );     // tira da pilha original
         if( strcmp( tempStudent->name, name ) != 0 ){   //compara o nome da pilha com o nome que quero remover
             Push( &tempStack, tempStudent ); //coloca na pilha temporaria pq nao eh o nome que quero remover ainda
-           printf( "\nTEMP:\n" ); //so pra ver qq ta acontecendo
-           ShowStack( &tempStack );
+          // printf( "\nTEMP:\n" ); //so pra ver qq ta acontecendo
+          // ShowStack( &tempStack );
         } else{
             free( tempStudent );  //significa que achou e ta liberando
             break;      //quebra o looping pq ja achei e deletei oq eu queria
@@ -173,9 +173,8 @@ void PopByName ( stack_t *stack, const char *name ){
         student_t *tempStudent;     //cria de novo pra poder trocar de uma pilha pra outra
         Pop( &tempStack, &tempStudent );    //tira da pilha temporaria
         Push( stack, tempStudent );     // coloca na pilha original
-        free( tempStudent );        //libera o espaço
-        printf( "\nORIG:\n" );  //so pra ver qq ta acontecendo
-        ShowStack( stack );
+        //printf( "\nORIG:\n" );  //so pra ver qq ta acontecendo
+        //ShowStack( stack );
     }
 
 }
