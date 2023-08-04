@@ -26,7 +26,9 @@ int firstUniqChar(char * s){
     int temp[250] = {0};
 
     for(i=0; i < size; i++){
-        temp[s[i]]++;   //aqui ele marca com 1 todas as letras pq elas vao aparecer pelo menos uma vez
+        temp[s[i]]++;   //aqui ele encontra o caractere sendo comparado e coloca ++ na posicao dele, ou seja
+                        // percorre a string s usando cada caracter do s[i] como indice do temp, entao cada volta do for
+                        // ele incrementa na mesma posicao que ja tinha aparecido, se repetir
     }
 
     for(i=0; i < size; i++){
