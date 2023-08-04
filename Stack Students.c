@@ -150,17 +150,17 @@ void ShowStack ( stack_t *stack ){
     if(stack->top == 0){
         printf("\nThe Stack is Empty\n");
     }
-int i=0;
+    int i=tempStack.top-1;
     while( !Clear( stack ) ){
         student_t *tempStudent;
         Pop ( stack, &tempStudent );
         Push ( &tempStack , tempStudent);
-        printf( "\n----STUDENT %d----\nName: %s\nAge: %d\n", i, tempStudent->name, tempStudent->age );
-         i++;
-        
+        //for(int i=stack->top; i=0; i--)
+        printf( "\n----STUDENT %d----\nName: %s\nAge: %d\n", i, tempStudent->name, tempStudent->age );  
+        i++;
     }
 
-    // int i=tempStack.top-1;
+
 
     while ( !Clear( &tempStack ) )
     {
