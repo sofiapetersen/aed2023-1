@@ -106,7 +106,9 @@ int main(){
 }
 
 void Reset ( stack_t *stack ){
-    //stack->students = NULL;  falar com o sor pq ta dando erro
+    for( int i=0; i<MAX; i++ ){
+        stack->students[i] = NULL;
+    } 
     stack->top = 0;
     stack->base = 0;
     stack->limit = MAX;
@@ -142,14 +144,33 @@ void Pop ( stack_t *stack, student_t **student ){
 }
 
 void ShowStack ( stack_t *stack ){
-    int i;
+    stack_t tempStack;
+    Reset ( &tempStack );
+
     if(stack->top == 0){
         printf("\nThe Stack is Empty\n");
     }
-
-    for( i = stack->top-1; i >= 0; i--){
-        printf("\n----STUDENT %d----\nName: %s\nAge: %d\n", i, stack->students[i]->name, stack->students[i]->age);
+int i=0;
+    while( !Clear( stack ) ){
+        student_t *tempStudent;
+        Pop ( stack, &tempStudent );
+        Push ( &tempStack , tempStudent);
+        printf( "\n----STUDENT %d----\nName: %s\nAge: %d\n", i, tempStudent->name, tempStudent->age );
+         i++;
+        
     }
+
+    // int i=tempStack.top-1;
+
+    while ( !Clear( &tempStack ) )
+    {
+        student_t *tempStudent;
+        Pop ( &tempStack, &tempStudent );   // desempilha da temporaria       
+       // printf( "\n----STUDENT %d----\nName: %s\nAge: %d\n", i, tempStudent->name, tempStudent->age );
+        Push ( stack, tempStudent );        //coloca na original
+       // i--;
+    }
+    
 }
 
 void PopByName ( stack_t *stack, const char *name ){
