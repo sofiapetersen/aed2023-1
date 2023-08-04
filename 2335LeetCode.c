@@ -35,6 +35,8 @@ int main(){
     sec = sec/2;
     sec = sec+2;
     return sec;
+
+    esse aqui só funciona nos casos que todos sao diferentes e > 0
 }
 */
 
@@ -49,5 +51,7 @@ int fillCups(int* amount, int amountSize){
         sec = amount[0] + (amount[1] + amount[2] - amount[0] + 1) / 2;
     } 
     return sec;
+
+    // mas esse aqui ta sem usar o amountSize
 
 }
