@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct{
@@ -8,7 +8,7 @@ typedef struct{
     float price;
 }Product;
 
-typedef struct{
+typedef struct TypeQueue{
     Product info;
     struct TypeQueue *pNext;
 }TypeQueue;
@@ -26,13 +26,14 @@ void print( Queue *pQueue );
 int main(){
 
     int menu;
-    Queue *newQueue;
+    Queue *newQueue = NULL;
     newQueue = RESET( newQueue );
     Product newP, removeP;
 
     do{
     printf( "\n------\nMENU\n------\n\n1. Push\n2. Pop\n3. Print\n4. Exit\nOption: " );
     scanf( "%d", &menu );
+    getchar();
 
     switch( menu ){
         case 1:
@@ -55,7 +56,6 @@ int main(){
         print( newQueue );
         break;
         case 4:
-        RESET ( newQueue );
         break;
     }
     } while ( menu != 4 );
