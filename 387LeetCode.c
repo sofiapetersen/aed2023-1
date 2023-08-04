@@ -21,22 +21,16 @@ int main(){
 }
 
 int firstUniqChar(char * s){
-    int i, j, size;
+    int i, size;
     size = strlen(s);
-    int temp[size] = {0};
+    int temp[250] = {0};
 
-    for(i=0; s[i] != '\0'; i++){
-        temp[i]=1;
-        for(j=i; s[j] != '\0'; j++){
-            if(/*j != i &&*/ s[i] == s[j+1]){ 
-                temp[i]++;
-            }
-
-        }
+    for(i=0; i < size; i++){
+        temp[s[i]]++;   //aqui ele marca com 1 todas as letras pq elas vao aparecer pelo menos uma vez
     }
 
-    for(i=0; s[i] != '\0'; i++){
-        if(temp[i] == 1){
+    for(i=0; i < size; i++){
+        if(temp[s[i]] == 1){
             return i;
         }
     
