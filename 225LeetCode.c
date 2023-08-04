@@ -54,13 +54,21 @@ void myStackFree(MyStack* obj) {
     free(obj);
 }
 
+void myStackPrint(MyStack *obj){
+    printf("\nStack Elements:\n");
+    for(int i = obj->top; i >= 0; i--){
+        printf("%d\n", obj->data[i]);
+    }
+    printf("\n");
+}
+
 int main(){
 
   MyStack* obj = myStackCreate();
   int x, menu;
 
 do{ 
-  printf("\nMENU\n1. Push\n2. Pop\n3. Show Top\n4. Is it Empty?\n5. Exit\nChoose: ");
+  printf("\nMENU\n1. Push\n2. Pop\n3. Show Top\n4. Is it Empty?\n5. Print Stack\n6. Exit\nChoose: ");
   scanf("%d", &menu);
 
   switch(menu){
@@ -83,11 +91,15 @@ do{
     break;
 
     case 5:
+    myStackPrint(obj);
+    break;
+
+    case 6:
     myStackFree(obj);
     break;
 
   }
-} while(menu != 5);
+} while(menu != 6);
 
  return 0;
 }
