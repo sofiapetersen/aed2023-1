@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+// sor, eu nao me orgulho dessa quantidade ifs, vou tentar diminuir em casa
+
 int fillCups(int* amount, int amountSize);
 
 int main(){
@@ -14,8 +16,6 @@ int main(){
     printf("type 2: ");
     scanf("%d", &amount[2]);
 
-    //printf("\nAmount[0]: %d\nAmount[1]: %d\nAmount[2]: %d\nsize: %d\n", amount[0], amount[1], amount[2], size);
-
     answer = fillCups(amount, size);
 
     printf("\nAnswer %d", answer);
@@ -23,22 +23,6 @@ int main(){
     return 0;
 
 }
-
-/*int fillCups(int* amount, int amountSize){
-    int sec;
-    int i;
-    
-    for(i=0; i < amountSize; i++){
-    sec += amount[i];
-}
-
-    sec = sec/2;
-    sec = sec+2;
-    return sec;
-
-    esse aqui só funciona nos casos que todos sao diferentes e > 0
-}
-*/
 
 int fillCups(int* amount, int amountSize){
 
@@ -54,14 +38,34 @@ int fillCups(int* amount, int amountSize){
         return sec;
     }
     else if(amount[0] == 0){
-        if(amount[1] == amount[2]){
+        if(amount[1] == amount[2] || amount[1] > amount[2]){
             sec = amount[1];        //nesse daqui se o primeiro for zero e os outros dois iguais ent eh o tempo deles
             return sec;
-        }else{
+        }
+        else{
         sec = (amount[1] + amount[2] + 2) / 2;      //se o primeiro for 0, entao ele nao precisa participar do calculo 
         return sec;                                 //dai se somar cada amount e dividir por 2 vai dar o tempo que precisa           
         }
     } 
+    else if(amount[1] == 0){
+        if(amount[0] == amount[2] || amount[0] > amount[2]){
+            sec = amount[0];        //nesse daqui se o segundo for zero e os outros dois iguais ent eh o tempo deles
+            return sec;
+        }
+        else{
+        sec = (amount[0] + amount[2] + 2) / 2;      //se o segundo for 0, entao ele nao precisa participar do calculo 
+        return sec;                                 //dai se somar cada amount e dividir por 2 vai dar o tempo que precisa           
+        }
+    }else if(amount[2] == 0){
+        if(amount[0] == amount[1] || amount[0] > amount[1]){
+            sec = amount[0];        //nesse daqui se o ultimo for zero e os outros dois iguais ent eh o tempo deles
+            return sec;
+        }
+        else{
+        sec = (amount[0] + amount[1] + 2) / 2;      //se o ultimo for 0, entao ele nao precisa participar do calculo 
+        return sec;                                 //dai se somar cada amount e dividir por 2 vai dar o tempo que precisa           
+        }
+    }
     else{
          sec = amount[0] + (amount[1] + amount[2] - amount[0] + 1) / 2;      // else, nesse caso aqui ele vai dar o tempo somando e dividindo por 2 pq so pode 2 diferentes por vez ou um do mesmo
     }
