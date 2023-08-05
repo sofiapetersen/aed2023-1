@@ -8,7 +8,7 @@ int fillCups(int* amount, int amountSize);
 
 int main(){
 
-    int *amount[3] = {0}, size = 3, answer;
+    int amount[3] = {0}, size = 3, answer;
     printf("type 0: ");
     scanf("%d", &amount[0]);
     printf("type 1: ");
