@@ -13,6 +13,7 @@ typedef struct {            //strct pra definir a fila de prioridade
 int Pop(PriorityQueue* pQ);
 void Push(PriorityQueue* pQ, int value);
 int fillCups(int* amount, int amountSize);
+void Reset(PriorityQueue *pQ) ;
 
 int main(){
 
@@ -32,7 +33,7 @@ int main(){
     return 0;
 }
 
-void Reset(PriorityQueue* pQ) {     //cria a fila em 0
+void Reset(PriorityQueue *pQ) {     //cria a fila em 0
     pQ->size = 0;
 }
 

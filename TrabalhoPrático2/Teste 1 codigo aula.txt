@@ -1,0 +1,65 @@
+Dr. Memory version 2.5.0 build 0 built on Oct 18 2021 03:10:43
+Windows version: WinVer=105;Rel=2009;Build=19045;Edition=Enterprise
+Dr. Memory results for pid 10384: "2335LeetCode.exe"
+Application cmdline: "D:\CC\aed2023-1\TrabalhoPr√°tico2\output\2335LeetCode.exe"
+Recorded 124 suppression(s) from default C:\Program Files (x86)\Dr. Memory\bin\suppress-default.txt
+
+Error #1: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x20e    (0x7601a0ae <KERNELBASE.dll+0x11a0ae>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x7601c984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/TrabalhoPr·tico2/2335LeetCode.c:78]
+# 5 .text           
+# 6 mainCRTStartup  
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77e57b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77e57aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.631 in thread 13628
+Note: instruction: cmp    %eax $0x0000001a
+
+Error #2: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x23b    (0x7601a0db <KERNELBASE.dll+0x11a0db>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x7601c984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/TrabalhoPr·tico2/2335LeetCode.c:78]
+# 5 .text           
+# 6 mainCRTStartup  
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77e57b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77e57aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.634 in thread 13628
+Note: instruction: data16 mov    %cx -> 0x00000234(%ebx,%eax,2)
+
+Error #3: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x167    (0x7601a007 <KERNELBASE.dll+0x11a007>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x7601c984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/TrabalhoPr·tico2/2335LeetCode.c:78]
+# 5 .text           
+# 6 mainCRTStartup  
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77e57b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77e57aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.650 in thread 13628
+Note: instruction: test   %eax %eax
+
+===========================================================================
+FINAL SUMMARY:
+
+DUPLICATE ERROR COUNTS:
+
+SUPPRESSIONS USED:
+
+ERRORS FOUND:
+      0 unique,     0 total unaddressable access(es)
+      3 unique,     3 total uninitialized access(es)
+      0 unique,     0 total invalid heap argument(s)
+      0 unique,     0 total GDI usage error(s)
+      0 unique,     0 total handle leak(s)
+      0 unique,     0 total warning(s)
+      0 unique,     0 total,      0 byte(s) of leak(s)
+      0 unique,     0 total,      0 byte(s) of possible leak(s)
+ERRORS IGNORED:
+      6 unique,     6 total,   4443 byte(s) of still-reachable allocation(s)
+         (re-run with "-show_reachable" for details)
+Details: C:\Users\User\AppData\Roaming\Dr. Memory\DrMemory-2335LeetCode.exe.10384.000\results.txt
