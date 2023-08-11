@@ -54,7 +54,7 @@ int main(){
         if (Push(&arvore, &registro)) {
             printf("\nInsercao %d realizada com sucesso.\n----- VEJA A ARVORE -----\n", i+1);
         } else {
-            printf("\n----- VEJA A ARVORE -----\n", i+1);
+            printf("\n----- VEJA A ARVORE -----\n");
         }
 
         PrintTree(arvore, 0);
@@ -65,12 +65,16 @@ int main(){
             printf("-------------------------\nA arvore nao eh AVL.\n");
         }
         }
-        printf("\n1- Repetir\n0- Sair\nOpcao: ");
+        printf("\n1- Repetir\n2- Voltar Menu\n0- Sair\nOpcao: ");
         scanf("%d", &menu);
+        if(menu == 2)
+            main();
     }while(menu != 0);
     }
     else if(opcao == 2){
         do{
+            arvore = NULL;
+
             printf("\nDigite o valor do no: ");
             scanf("%ld", &registro.Chave);
 
@@ -88,9 +92,10 @@ int main(){
                 printf("-------------------------\nA arvore nao eh AVL.\n");
             }
 
-        printf("\n1- Adicionar outro no\n0- Sair\nOpcao: ");
+        printf("\n1- Adicionar outro no\n2- Voltar Menu\n0- Sair\nOpcao: ");
         scanf("%d", &menu);
-
+        if(menu == 2)
+            main();
         }while(menu != 0);
     }
 
