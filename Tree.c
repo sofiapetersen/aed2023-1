@@ -28,6 +28,7 @@ int BalancaEsquerda(No** ppRaiz);
 int BalancaDireita(No** ppRaiz);
 int EhArvoreArvl(No* pRaiz);
 void PrintTree(No* pRaiz, int nivel);
+void FreeTree(No* pRaiz);
 
 
 int main(){
@@ -52,7 +53,7 @@ int main(){
         scanf(" %c", &opcao);
     } while (opcao == 'S' || opcao == 's');
 
-
+    FreeTree(arvore);
     return 0;
 }
 
@@ -178,5 +179,13 @@ void PrintTree(No* pRaiz, int nivel) {
         for (i = 0; i < nivel; i++) printf("    ");
         printf("%ld\n", pRaiz->Reg.Chave);
         PrintTree(pRaiz->pEsq, nivel + 1);
+    }
+}
+
+void FreeTree(No* pRaiz) {
+    if (pRaiz != NULL) {
+        FreeTree(pRaiz->pEsq);
+        FreeTree(pRaiz->pDir);
+        free(pRaiz);  // Free the current node
     }
 }
