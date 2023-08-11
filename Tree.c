@@ -1,18 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef long TipoChave;
 
 typedef struct Registro {
     TipoChave Chave;
-    /* outros componentes */
 } Registro;
 
-typedef struct No No;  // Removed the "*" from "struct No *"
+typedef struct No No; 
 typedef No* Apontador;
 typedef Apontador TipoDicionario;
 
-struct No { // Corrected "Struct" to "struct"
+struct No { 
     Registro Reg;
     Apontador pEsq, pDir;
 };
@@ -35,29 +35,32 @@ int main(){
 
     TipoDicionario arvore = NULL;
     Registro registro;
-    char opcao;
+    int nos;
 
-    do {
-        printf("Digite o valor da chave: ");
-        scanf("%ld", &registro.Chave);
+        printf("Digite quantos nos: ");
+        scanf("%d", &nos);
+        srand(time(0));
+
+        for(int i = 0; i < nos; i++){
+
+            registro.Chave = rand() % 100;
 
         if (Push(&arvore, &registro)) {
-            printf("Insercao realizada com sucesso.\n");
+            printf("\nInsercao %d realizada com sucesso.\n----- VEJA A ARVORE -----\n", i+1);
         } else {
-            printf("Erro na insercao.\n");
+            printf("\n----- VEJA A ARVORE -----\n", i+1);
         }
 
         PrintTree(arvore, 0);
 
         if (EhArvoreAvl(arvore)) {
-            printf("A arvore eh AVL.\n");
+            printf("-------------------------\nA arvore eh AVL.\n");
         } else {
-            printf("A arvore nao eh AVL.\n");
+            printf("-------------------------\nA arvore nao eh AVL.\n");
+        }
         }
 
-        printf("Deseja inserir mais um elemento? (S/N): ");
-        scanf(" %c", &opcao);
-    } while (opcao == 'S' || opcao == 's');
+    
 
     FreeTree(arvore);
     return 0;
@@ -89,7 +92,7 @@ int Push(No** ppRaiz, Registro* x) {
         (*ppRaiz)->Reg = *x;
         (*ppRaiz)->pEsq = NULL;
         (*ppRaiz)->pDir = NULL;
-        return 1;  // Added the missing semicolon
+        return 1; 
     } else if ((*ppRaiz)->Reg.Chave > x->Chave) {  // se o novo for menor que o q ja tem, entra na direita
         if (Push(&(*ppRaiz)->pEsq, x)) {    //dai ele entra no push de novo, faz aquele ali do nó nulo e volta pra cá
             if (Balanceamento(ppRaiz))  //confere o balanceamento
@@ -139,11 +142,13 @@ int BalancaEsquerda(No** ppRaiz){
     int fbe = FB ( (*ppRaiz)->pEsq );
     if ( fbe > 0 ){
         RSD(ppRaiz);
+        printf("\n***\nFoi necessario rotacao simples esquerda\n***\n");
         return 1;
     }
     else if (fbe < 0 ){ /* Rotação Dupla Direita */
         RSE( &((*ppRaiz)->pEsq) );
         RSD( ppRaiz ); /* &(*ppRaiz) */
+        printf("\n***\nFoi necessario rotacao dupla direita\n***\n");
         return 1;
     }
     return 0;
@@ -153,11 +158,13 @@ int BalancaDireita(No** ppRaiz){
     int fbd = FB((*ppRaiz)->pDir);
     if(fbd < 0){
         RSE(ppRaiz);
+        printf("\n***\nFoi necessario rotacao simples direita\n***\n");
         return 0;
     }
     else if(fbd > 0){
         RSD(&((*ppRaiz)->pEsq));
         RSE(ppRaiz);
+        printf("\n***\nFoi necessario rotacao dupla esquerda\n***\n");
         return 0;
     }
 }
@@ -192,6 +199,6 @@ void FreeTree(No* pRaiz) {
     if (pRaiz != NULL) {
         FreeTree(pRaiz->pEsq);
         FreeTree(pRaiz->pDir);
-        free(pRaiz);  // Free the current node
+        free(pRaiz);  
     }
 }
