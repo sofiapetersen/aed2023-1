@@ -34,7 +34,12 @@ void FreeTree(No* pRaiz);
 int main(){
     TipoDicionario arvore = NULL;
     Registro registro;
-    int nos, opcao;
+    int nos, menu, opcao;
+
+    printf("\n----MENU----\n1- Adicionar numero randomico\n2- Escolher numeros\nOpcao: ");
+    scanf("%d", &opcao);
+
+    if(opcao == 1){
 
     do{
         arvore = NULL;
@@ -61,8 +66,33 @@ int main(){
         }
         }
         printf("\n1- Repetir\n0- Sair\nOpcao: ");
-        scanf("%d", &opcao);
-    }while(opcao != 0);
+        scanf("%d", &menu);
+    }while(menu != 0);
+    }
+    else if(opcao == 2){
+        do{
+            printf("\nDigite o valor do no: ");
+            scanf("%ld", &registro.Chave);
+
+            if (Push(&arvore, &registro)) {
+                printf("\nInsercao realizada com sucesso.\n----- VEJA A ARVORE -----\n");
+            } else {
+                printf("\n----- VEJA A ARVORE -----\n");
+            }
+
+            PrintTree(arvore, 0);
+
+            if (EhArvoreAvl(arvore)) {
+                printf("-------------------------\nA arvore eh AVL.\n");
+            } else {
+                printf("-------------------------\nA arvore nao eh AVL.\n");
+            }
+
+        printf("\n1- Adicionar outro no\n0- Sair\nOpcao: ");
+        scanf("%d", &menu);
+
+        }while(menu != 0);
+    }
 
     
 
