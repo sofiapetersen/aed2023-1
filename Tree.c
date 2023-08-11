@@ -26,7 +26,7 @@ void RSE(No** ppRaiz);
 void RSD(No** ppRaiz);
 int BalancaEsquerda(No** ppRaiz);
 int BalancaDireita(No** ppRaiz);
-int EhArvoreArvl(No* pRaiz);
+int EhArvoreAvl(No* pRaiz);
 void PrintTree(No* pRaiz, int nivel);
 void FreeTree(No* pRaiz);
 
@@ -48,6 +48,12 @@ int main(){
         }
 
         PrintTree(arvore, 0);
+
+        if (EhArvoreAvl(arvore)) {
+            printf("A arvore eh AVL.\n");
+        } else {
+            printf("A arvore nao eh AVL.\n");
+        }
 
         printf("Deseja inserir mais um elemento? (S/N): ");
         scanf(" %c", &opcao);
@@ -84,14 +90,14 @@ int Push(No** ppRaiz, Registro* x) {
         (*ppRaiz)->pEsq = NULL;
         (*ppRaiz)->pDir = NULL;
         return 1;  // Added the missing semicolon
-    } else if ((*ppRaiz)->Reg.Chave > x->Chave) {  // Corrected x->chave to x->Chave
-        if (Push(&(*ppRaiz)->pEsq, x)) {
-            if (Balanceamento(ppRaiz))
+    } else if ((*ppRaiz)->Reg.Chave > x->Chave) {  // se o novo for menor que o q ja tem, entra na direita
+        if (Push(&(*ppRaiz)->pEsq, x)) {    //dai ele entra no push de novo, faz aquele ali do nó nulo e volta pra cá
+            if (Balanceamento(ppRaiz))  //confere o balanceamento
                 return 0;
             else
                 return 1;
         }
-    } else if ((*ppRaiz)->Reg.Chave < x->Chave) {  // Corrected x->chave to x->Chave
+    } else if ((*ppRaiz)->Reg.Chave < x->Chave) {  // se o novo for maior que o q ja tem, entra na esquerda
         if (Push(&(*ppRaiz)->pDir, x)) {
             if (Balanceamento(ppRaiz))
                 return 0;
@@ -156,13 +162,13 @@ int BalancaDireita(No** ppRaiz){
     }
 }
 
-int EhArvoreArvl(No* pRaiz){
+int EhArvoreAvl(No* pRaiz){
     int fb;
     if (pRaiz == NULL)
         return 1;
-    if (!EhArvoreArvl(pRaiz->pEsq))
+    if (!EhArvoreAvl(pRaiz->pEsq))
         return 0;
-    if (!EhArvoreArvl(pRaiz->pDir))
+    if (!EhArvoreAvl(pRaiz->pDir))
         return 0;
 
     fb = FB (pRaiz);
