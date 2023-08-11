@@ -32,12 +32,13 @@ void FreeTree(No* pRaiz);
 
 
 int main(){
-
     TipoDicionario arvore = NULL;
     Registro registro;
-    int nos;
+    int nos, opcao;
 
-        printf("Digite quantos nos: ");
+    do{
+        arvore = NULL;
+        printf("\nDigite quantos nos: ");
         scanf("%d", &nos);
         srand(time(0));
 
@@ -59,6 +60,9 @@ int main(){
             printf("-------------------------\nA arvore nao eh AVL.\n");
         }
         }
+        printf("\n1- Repetir\n0- Sair\nOpcao: ");
+        scanf("%d", &opcao);
+    }while(opcao != 0);
 
     
 
