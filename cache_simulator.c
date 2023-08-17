@@ -6,7 +6,6 @@
 typedef struct{
     int valid;
     int tag;
-    char *data;
 } CacheLine;
 
 typedef struct{
@@ -67,7 +66,6 @@ Cache* initializeCache(int num_sets, int block_size, int associativity){
     for(i = 0; i < num_sets * associativity; i++){      //num_sets * associativity representa o total de linhas da cache
         cache->lines[i].tag = 0;
         cache->lines[i].valid = 0;
-        cache->lines[i].data = (char *)malloc(sizeof(block_size));      //array que armazena os dados em uma linha de cache, e o tamanho é o tamanho do bloco    
     }
 
     return cache;
@@ -117,12 +115,6 @@ void readCache(Cache *cache, int address){     //um ponteiro vai ser pra estrutu
 
 // pra liberar a cache
 void freeCache (Cache *cache){
-    int i;
-
-    for(i = 0; i < cache->numSets * cache->associativity; i++){ //pra poder percorrer todas as linhas
-        free(cache->lines->data[i]);    //dai libera os dados
-    }
-
     free(cache->lines); //libera o espaço alocado pras linhas
     free(cache);        //libera o espaço alocao pra cache
 }
