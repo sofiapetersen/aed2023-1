@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+// A arvore AVL nao eh boa para casos que tem que inserir muito pq ela calcula demais onde colocar e acaba perdendo velocidade
+// porem por ser totalmente balanceada ela é boa para buscas, entao casos que precisa de busca mais que inserção ela é o ideal
+
 typedef long TipoChave;
 
 typedef struct Registro {
