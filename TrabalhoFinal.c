@@ -1,4 +1,3 @@
-// pq no print de 9 x 9 imprime a coluna toda e no print do a + b em maiores de 5x5 tbm?
 // Mostre o desempenho em termos de memória e tempo de execução usando a versão usando listas e a versão força bruta. ?
 
 #include <stdio.h>
@@ -27,27 +26,28 @@ Matrix *matrix_create_random( unsigned int m );//--------------->Completo
 
 int main( void )
 {
-    // Matrix *A = matrix_create();
-    // matrix_print( A );
-    // Matrix *B = matrix_create(); 
-    // matrix_print( B );
-    // Matrix *C = matrix_add( A, B ); 
-    // matrix_print( C );
-    // matrix_destroy( C );
-    // C = matrix_multiply( A, B ); 
-    // matrix_print( C );
-    // matrix_destroy( C );
-    // C = matrix_transpose( A ); 
-    // matrix_print( C );
-    // matrix_destroy( C );
-    // matrix_destroy( A );
-    // matrix_destroy( B );
+    Matrix *A = matrix_create();
+    matrix_print( A );
+    Matrix *B = matrix_create(); 
+    matrix_print( B );
+    Matrix *C = matrix_add( A, B ); 
+    matrix_print( C );
+    matrix_destroy( C );
+    C = matrix_multiply( A, B ); 
+    matrix_print( C );
+    matrix_destroy( C );
+    C = matrix_transpose( A ); 
+    matrix_print( C );
+    matrix_destroy( C );
+    matrix_destroy( A );
+    matrix_destroy( B );
 
     printf( "Create a random square matrix, insert rows and columns: " );
     unsigned int random;
     scanf( "%u", &random );
     Matrix *D = matrix_create_random( random );
     matrix_print( D );
+    matrix_destroy( D );
     return 0;
 
 }
@@ -169,40 +169,53 @@ void matrix_print( Matrix *m ) {
     for ( currentRow = m->right; currentRow->right != m; currentRow = currentRow->right, nCols++ );//->Conta a quantidade de colunas
 
     int curRow, curCol;
-    float matrix[nRows][nCols];//--------------------------------------------------------------------->Cria uma matriz de nRows x nCols
 
-    for ( curRow = 0; curRow <= nRows; curRow++ )//--------------------------------------------------->Inicializa todos o elementos da matriz em '0'
-        for ( curCol = 0; curCol <= nCols; curCol++ )
-            matrix[curRow][curCol] = 0;
-
-    currentRow = m->below;//-------------------------------------------------------------------------->CurrentRow recebe a cabeça da primeira linha
-
-    while ( currentRow != m )//----------------------------------------------------------------------->Reepete enquanto o currentRow não voltar para a cabeça principal
+    float **matrix = ( float ** )malloc( nRows * sizeof( float * ) );//--->Cria uma matriz de nRows x nCols dinamicamente
+    for ( curRow = 0; curRow < nRows; curRow++ )
     {
-        Matrix *currentCell = currentRow->right;//---------------------------------------------------->CurrentCell recebe a primeira célula da linha
-        
-        while ( currentCell != currentRow )//--------------------------------------------------------->Repete enquanto o currentCell não voltar para a cabeça da linha
-        {
-            matrix[currentCell->row - 1][currentCell->column - 1] = currentCell->info;//-------------->A matriz criada recebe o valor que está na mesma posição da matriz esparsa
-            currentCell = currentCell->right;//------------------------------------------------------->Vai para a próxima célula na mesma linha
-        }
-
-        currentRow = currentRow->below;//------------------------------------------------------------->Terminada a linha, pula para a próxima
+        matrix[curRow] = ( float * )malloc( nCols * sizeof( float ) );
     }
 
-    for ( curRow = 0; curRow < nRows; curRow++ )//---------------------------------------------------->Printa a matriz esparsa com os '0's nas posições vazias
+    for ( curRow = 0; curRow < nRows; curRow++ )//--->Inicializa todos o elementos da matriz em '0'
+        for ( curCol = 0; curCol < nCols; curCol++ )
+            matrix[curRow][curCol] = 0;
+
+    currentRow = m->below;//------>CurrentRow recebe a cabeça da primeira linha
+
+    while ( currentRow != m )//--->Reepete enquanto o currentRow não voltar para a cabeça principal
+    {
+        Matrix *currentCell = currentRow->right;//-->CurrentCell recebe a primeira célula da linha
+
+        while ( currentCell != currentRow )
+        {
+            matrix[currentCell->row - 1][currentCell->column - 1] = currentCell->info;//-->A matriz criada recebe o valor que está na mesma posição da matriz esparsa
+            currentCell = currentCell->right;//-->Vai para a próxima célula na mesma linha
+        }
+
+        currentRow = currentRow->below;//--->Terminada a linha, pula para a próxima
+    }
+
+    
+    for ( curRow = 0; curRow < nRows; curRow++ )//->Printa a matriz esparsa com os '0's nas posições vazias
     {
         for ( curCol = 0; curCol < nCols; curCol++ )
         {
-            if ( matrix[curRow][curCol] < 10 )//------------------------------------------------------>if desnecessário, foi apenas por estética
+            if ( matrix[curRow][curCol] < 10 ) {
                 printf( "(%d, %d): %.2f   ", ( curRow + 1 ), ( curCol + 1 ), matrix[curRow][curCol] );
-            else
+            } else {
                 printf( "(%d, %d): %.2f  ", ( curRow + 1 ), ( curCol + 1 ), matrix[curRow][curCol] );
+            }
         }
-        printf( "\n" );//----------------------------------------------------------------------------->Pula um linha depois de percorrer o curCol
+        printf( "\n" );//--->Pula uma linha depois de percorrer o curCol
     }
     printf( "\n\n" );
+
+    
+    for (curRow = 0; curRow < nRows; curRow++)//-->Libera a memória alocada para a matriz
+        free(matrix[curRow]);
+    free(matrix);
 }
+
 
 void matrix_destroy( Matrix *m ) {
     Matrix *currentRow = m->below;//-------------------->Inicializa o currentRow com a primeira linha da matriz
