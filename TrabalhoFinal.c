@@ -1,5 +1,9 @@
+// pq no print de 9 x 9 imprime a coluna toda e no print do a + b em maiores de 5x5 tbm?
+// Mostre o desempenho em termos de memória e tempo de execução usando a versão usando listas e a versão força bruta. ?
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct matrix {
 	struct matrix *right;
@@ -19,24 +23,31 @@ Matrix *matrix_multiply( Matrix *m, Matrix *n );//-------------->Corrigido e Com
 Matrix *matrix_transpose( Matrix *m );//------------------------>Completo
 Matrix *heads_create( int x, int y );//------------------------->Fiz a mais para poupar tempo e linhas de código
 int compare_to( int x, int y );
+Matrix *matrix_create_random( unsigned int m );//--------------->Completo
 
 int main( void )
 {
-    Matrix *A = matrix_create();
-    matrix_print( A );
-    Matrix *B = matrix_create(); 
-    matrix_print( B );
-    Matrix *C = matrix_add( A, B ); 
-    matrix_print( C );
-    matrix_destroy( C );
-    C = matrix_multiply( A, B ); 
-    matrix_print( C );
-    matrix_destroy( C );
-    C = matrix_transpose( A ); 
-    matrix_print( C );
-    matrix_destroy( C );
-    matrix_destroy( A );
-    matrix_destroy( B );
+    // Matrix *A = matrix_create();
+    // matrix_print( A );
+    // Matrix *B = matrix_create(); 
+    // matrix_print( B );
+    // Matrix *C = matrix_add( A, B ); 
+    // matrix_print( C );
+    // matrix_destroy( C );
+    // C = matrix_multiply( A, B ); 
+    // matrix_print( C );
+    // matrix_destroy( C );
+    // C = matrix_transpose( A ); 
+    // matrix_print( C );
+    // matrix_destroy( C );
+    // matrix_destroy( A );
+    // matrix_destroy( B );
+
+    printf( "Create a random square matrix, insert rows and columns: " );
+    unsigned int random;
+    scanf( "%u", &random );
+    Matrix *D = matrix_create_random( random );
+    matrix_print( D );
     return 0;
 
 }
@@ -420,4 +431,24 @@ Matrix *matrix_transpose( Matrix *m )
     }
 
     return head;
+}
+
+Matrix *matrix_create_random( unsigned int m )
+{
+    int i, j, value, total = m*m, filled = 0;
+    Matrix *head = heads_create( m, m );    //----->Cria as cabeças da matriz
+    srand( time ( 0 ) );
+
+    while ( filled < total )
+    {
+         
+        i = rand() % m;
+        j = rand() % m;
+        value = rand() % 200;
+
+        matrix_setelem( head, i+1, j+1, value );//-------------------->Cria uma nova célula a partir da função 'matrix_setelem'
+        filled++;
+    }
+
+        return head;
 }
