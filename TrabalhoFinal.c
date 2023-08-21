@@ -305,15 +305,20 @@ Matrix *matrix_add( Matrix *m, Matrix *n )
     for ( currentRow = n->right; currentRow->right != n; currentRow = currentRow->right, nColsN++ );//->Conta a quantidade de colunas da matriz n
 
 
-    int curRow, curCol, Rows = compare_to( nRowsM, nRowsN ), Cols = compare_to( nColsM, nColsN );
-    float matrix[Rows][Cols];//---------->Cria uma matriz usando o maior número de linhas e colunas entre as matrizes 'm' e 'n'
+    int curRow, curCol, Rows = compare_to( nRowsM, nRowsN ), Cols = compare_to( nColsM, nColsN );;
 
-    for ( curRow = 0; curRow <= Rows; curRow++ )//--------->Inicializa todos o elementos da matriz em '0'
-        for ( curCol = 0; curCol <= Cols; curCol++ )
+    float **matrix = ( float ** )malloc( Rows * sizeof( float * ) );//--->Cria uma matriz de nRows x nCols dinamicamente
+    for ( curRow = 0; curRow < Rows; curRow++ )
+    {
+        matrix[curRow] = ( float * )malloc( Cols * sizeof( float ) );
+    }
+
+    for ( curRow = 0; curRow < Rows; curRow++ )//--->Inicializa todos o elementos da matriz em '0'
+        for ( curCol = 0; curCol < Cols; curCol++ )
             matrix[curRow][curCol] = 0;
 
-    currentRow = m->below;//---------------->CurrentRow recebe a cabeça da primeira linha da matriz m
-
+    currentRow = m->below;//------>CurrentRow recebe a cabeça da primeira linha
+    
     while ( currentRow != m )//------------->Repete enquanto o currentRow não voltar para a cabeça principal
     {
         Matrix *currentCell = currentRow->right;//-------->CurrentCell recebe a primeira célula da linha
@@ -352,6 +357,11 @@ Matrix *matrix_add( Matrix *m, Matrix *n )
                 matrix_setelem( head, ( curRow + 1), ( curCol + 1 ), matrix[curRow][curCol] );
         }
     }
+
+    for (curRow = 0; curRow < Rows; curRow++)//-->Libera a memória alocada para a matriz
+        free(matrix[curRow]);
+    free(matrix);
+
     return head;
 }
 
@@ -367,18 +377,24 @@ Matrix *matrix_multiply( Matrix *m, Matrix *n )
     for ( currentRow = n->right; currentRow->right != n; currentRow = currentRow->right, nColsN++ );//->Conta a quantidade de colunas da matriz n
 
 
-    int curRow, curCol, Rows = compare_to( nRowsM, nRowsN ), Cols = compare_to( nColsM, nColsN );
-    float matrixM[Rows][Cols];//---------->Cria uma matriz usando o maior número de linhas e colunas entre as matrizes 'm' e 'n' para receber os valores da matriz 'm'
-    float matrixN[Rows][Cols];//---------->Cria uma matriz usando o maior número de linhas e colunas entre as matrizes 'm' e 'n' para receber os valores da matriz 'n' 
+    int curRow, curCol, Rows = compare_to( nRowsM, nRowsN ), Cols = compare_to( nColsM, nColsN );;
 
-    for ( curRow = 0; curRow <= Rows; curRow++ )//--------->Inicializa todos o elementos da matriz em '0'
-        for ( curCol = 0; curCol <= Cols; curCol++ )
-        {
+    float **matrixM = ( float ** )malloc( Rows * sizeof( float * ) );//--->Cria uma matriz M de nRows x nCols dinamicamente
+    float **matrixN = ( float ** )malloc( Rows * sizeof( float * ) );//--->Cria uma matriz N de nRows x nCols dinamicamente
+    
+    for ( curRow = 0; curRow < Rows; curRow++ )
+    {
+        matrixM[curRow] = ( float * )malloc( Cols * sizeof( float ) );
+        matrixN[curRow] = ( float * )malloc( Cols * sizeof( float ) );
+    }
+
+    for ( curRow = 0; curRow < Rows; curRow++ )//--->Inicializa todos o elementos das matrizes em '0'
+        for ( curCol = 0; curCol < Cols; curCol++ ){
             matrixM[curRow][curCol] = 0;
             matrixN[curRow][curCol] = 0;
         }
 
-    currentRow = m->below;//---------------->CurrentRow recebe a cabeça da primeira linha da matriz m
+    currentRow = m->below;//------>CurrentRow recebe a cabeça da primeira linha
 
     while ( currentRow != m )//------------->Repete enquanto o currentRow não voltar para a cabeça principal
     {
@@ -418,6 +434,16 @@ Matrix *matrix_multiply( Matrix *m, Matrix *n )
                 matrix_setelem( head, ( curRow + 1), ( curCol + 1 ), matrixN[curRow][curCol] );
         }
     }
+
+    for (curRow = 0; curRow < Rows; curRow++)//-->Libera a memória alocada para a matriz M
+        free(matrixM[curRow]);
+    free(matrixM);
+
+    for (curRow = 0; curRow < Rows; curRow++)//-->Libera a memória alocada para a matriz N
+        free(matrixN[curRow]);
+    free(matrixN);
+
+
     return head;
 }
 
