@@ -287,10 +287,7 @@ float matrix_getelem( Matrix *m, int x, int y )
 
 int compare_to( int x, int y )
 {
-    if ( x > y )
-        return x;
-    else
-        return y;
+    return x > y ? x : y;
 }
 
 Matrix *matrix_add( Matrix *m, Matrix *n )
@@ -305,7 +302,7 @@ Matrix *matrix_add( Matrix *m, Matrix *n )
     for ( currentRow = n->right; currentRow->right != n; currentRow = currentRow->right, nColsN++ );//->Conta a quantidade de colunas da matriz n
 
 
-    int curRow, curCol, Rows = compare_to( nRowsM, nRowsN ), Cols = compare_to( nColsM, nColsN );;
+    int curRow, curCol, Rows = compare_to( nRowsM, nRowsN ), Cols = compare_to( nColsM, nColsN );
 
     float **matrix = ( float ** )malloc( Rows * sizeof( float * ) );//--->Cria uma matriz de nRows x nCols dinamicamente
     for ( curRow = 0; curRow < Rows; curRow++ )
