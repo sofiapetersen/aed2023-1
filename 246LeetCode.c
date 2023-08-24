@@ -8,61 +8,64 @@ typedef struct TreeNode {
     struct TreeNode *right;
 } Node;
 
-int Push(Node **root, int val);
-int RightBalance(Node **root);
-int LeftBalance(Node **root);
-int FB(Node *root);
-int Size(Node *root);
-int Balance(Node **root);
-void LeftRotation(Node **root);
-void RightRotation(Node **root);
-Node *invertTree(Node *root);
-void printTree(Node *root, int level);
+int Push( Node **root, int val );
+int RightBalance( Node **root );
+int LeftBalance( Node **root );
+int FB( Node *root );
+int Size( Node *root );
+int Balance( Node **root );
+void LeftRotation( Node **root );
+void RightRotation( Node **root );
+Node *invertTree( Node *root );
+void printTree( Node *root, int level );
+void freeTree( Node *root );
 
 int main() {
     int value;
     Node *root = NULL;
 
     while (1) {
-        printf("\nAdd a node: ");
-        scanf("%d", &value);
-        if (value == -1)
+        printf( "\nAdd a node: " );
+        scanf( "%d", &value );
+        if ( value == -1 )
             break;
         else {
-            if (Push(&root, value)) {
-                printf("\nInsertion correct\n");
+            if ( Push( &root, value ) ) {
+                printf( "\nInsertion correct\n" );
             } else {
-                printf("\nInsertion error\n");
+                printf( "\nInsertion error\n" );
             }
         }
     }
 
-    printf("\nThe tree:\n");
-    printTree(root, 0);
-    Node *inverted = invertTree(root);
-    printf("\nThe inverted tree:\n");
-    printTree(inverted, 0);
+    printf( "\nThe tree:\n" );
+    printTree( root, 0 );
+    Node *inverted = invertTree( root );
+    printf( "\nThe inverted tree:\n" );
+    printTree( inverted, 0 );
+
+    freeTree( root );
 
     return 0;
 }
 
-int Push(Node **root, int value) {
-    if (*root == NULL) {
-        *root = (Node *)malloc(sizeof(Node));
-        (*root)->val = value;
-        (*root)->left = NULL;
-        (*root)->right = NULL;
+int Push( Node **root, int value ) {
+    if ( *root == NULL ) {
+        *root = ( Node * )malloc( sizeof( Node ) );
+        ( *root )->val = value;
+        ( *root )->left = NULL;
+        ( *root )->right = NULL;
         return 1;
-    } else if ((*root)->val > value) {
-        if (Push(&((*root)->left), value)) {
-            if (Balance(root))
+    } else if ( ( *root )->val > value ) {
+        if ( Push( &( ( *root) ->left ), value ) ) {
+            if ( Balance( root ) )
                 return 0;
             else
                 return 1;
         }
-    } else if ((*root)->val < value) {
-        if (Push(&((*root)->right), value)) {
-            if (Balance(root))
+    } else if ( ( *root )->val < value ) {
+        if ( Push( &( ( *root )->right ), value ) ) {
+            if ( Balance( root ) )
                 return 0;
             else
                 return 1;
@@ -72,84 +75,80 @@ int Push(Node **root, int value) {
         return 0;
 }
 
-int FB(Node *root) {
-    if (root == NULL)
+int FB( Node *root ) {
+    if ( root == NULL )
         return 0;
-    return Size(root->left) - Size(root->right);
+    return Size( root->left ) - Size( root->right );
 }
 
-int Size(Node *root) {
-    if (root == NULL)
+int Size( Node *root ) {
+    if ( root == NULL )
         return 0;
-    int left = Size(root->left);
-    int right = Size(root->right);
+    int left = Size( root->left );
+    int right = Size( root->right );
 
-    return (left > right ? left : right) + 1;
+    return ( left > right ? left : right ) + 1;
 }
 
-int Balance(Node **root) {
-    int fb = FB(*root);
-    if (fb > 1)
-        return LeftBalance(root);
-    else if (fb < -1)
-        return RightBalance(root);
+int Balance( Node **root ) {
+    int fb = FB( *root );
+    if ( fb > 1 )
+        return LeftBalance( root );
+    else if ( fb < -1 )
+        return RightBalance( root );
     else
         return 0;
 }
 
-void LeftRotation(Node **root) {
-    Node *aux = (*root)->right;
-    (*root)->right = aux->left;
-    aux->left = (*root);
-    (*root) = aux;
+void LeftRotation( Node **root ) {
+    Node *aux = ( *root )->right;
+    ( *root )->right = aux->left;
+    aux->left = ( *root );
+    ( *root ) = aux;
 }
 
-void RightRotation(Node **root) {
-    Node *aux = (*root)->left;
-    (*root)->left = aux->right;
-    aux->right = (*root);
-    (*root) = aux;
+void RightRotation( Node **root ) {
+    Node *aux = ( *root )->left;
+    ( *root )->left = aux->right;
+    aux->right = ( *root );
+    ( *root ) = aux;
 }
 
-int LeftBalance(Node **root) {
-    int fbe = FB ( (*root)->left );
-    if ( fbe > 0 ){
+int LeftBalance( Node **root ) {
+    int fbl = FB ( ( *root )->left );
+    if ( fbl > 0 ){
         RightRotation(root);
-        printf("\n***\nFoi necessario rotacao simples esquerda\n***\n");
         return 1;
     }
-    else if (fbe < 0 ){ /* Rotação Dupla Direita */
-        LeftRotation( &((*root)->right) );
+    else if ( fbl < 0 ){     // Rotação Dupla Direita
+        LeftRotation( &( ( *root)->right ) );
         RightRotation( root );
-        printf("\n***\nFoi necessario rotacao dupla direita\n***\n");
         return 1;
     }
     return 0;
 }
 
-int RightBalance(Node **root) {
-    int fbd = FB((*root)->right);
-    if(fbd < 0){
+int RightBalance( Node **root ) {
+    int fbr = FB( ( *root )->right );
+    if( fbr < 0 ){
         LeftRotation(root);
-        printf("\n***\nFoi necessario rotacao simples direita\n***\n");
         return 0;
     }
-    else if(fbd > 0){
-        RightRotation(&((*root)->left));
-        LeftRotation(root);
-        printf("\n***\nFoi necessario rotacao dupla esquerda\n***\n");
+    else if( fbr > 0 ){
+        RightRotation( &( ( *root )->left ) );
+        LeftRotation( root );
         return 0;
     }
 }
 
 
-Node *invertTree(Node *root) {
-    if (root == NULL)
+Node *invertTree( Node *root ) {
+    if ( root == NULL )
         return NULL;
 
     Node *temp = root->left;
-    root->left = invertTree(root->right);
-    root->right = invertTree(temp);
+    root->left = invertTree( root->right );
+    root->right = invertTree( temp );
 
     return root;
 }
@@ -167,4 +166,10 @@ void printTree( Node *root, int level ) {
     }
 }
 
-
+void freeTree( Node *root ) {
+    if ( root != NULL ) {
+        freeTree( root->left );
+        freeTree( root->right );
+        free( root );  
+    }
+}
