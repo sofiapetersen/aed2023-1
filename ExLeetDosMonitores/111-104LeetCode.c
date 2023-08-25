@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 typedef struct TreeNode {
     int val;
     struct TreeNode *left;
