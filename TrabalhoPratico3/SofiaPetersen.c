@@ -56,32 +56,32 @@ int main() {
 }
 
 int Push(Node **root, int value) {
-    if (*root == NULL) {
-        *root = (Node *)malloc(sizeof(Node));
-        (*root)->val = value;
-        (*root)->left = NULL;
-        (*root)->right = NULL;
+    if ( *root == NULL ) {
+        *root = ( Node * )malloc( sizeof( Node ) );
+        ( *root )->val = value;
+        ( *root )->left = NULL;
+        ( *root )->right = NULL;
         return 1;
-    } else if ((*root)->val > value) {
-        if (Push(&((*root)->left), value)) {
-            if (FB(*root) > 1) {    //coloquei mais essa verificação no push
-                if (value < (*root)->left->val) {
-                    RightRotation(root);
+    } else if ( ( *root )->val > value ) {
+        if ( Push( &( ( *root )->left ), value ) ) {
+            if ( FB( *root ) > 1 ) {    //coloquei mais essa verificação no push
+                if ( value < ( *root )->left->val ) {
+                    RightRotation( root );
                 } else {
-                    LeftRotation(&((*root)->left));
-                    RightRotation(root);
+                    LeftRotation( &( ( *root )->left ) );
+                    RightRotation( root );
                 }
             }
             return 1;
         }
-    } else if ((*root)->val < value) {
-        if (Push(&((*root)->right), value)) {
-            if (FB(*root) < -1) {   //coloquei mais essa verificação no push
-                if (value > (*root)->right->val) {
-                    LeftRotation(root);
+    } else if ( ( *root )->val < value ) {
+        if ( Push( &( ( *root )->right ), value )) {
+            if ( FB( *root ) < -1 ) {   //coloquei mais essa verificação no push
+                if ( value > ( *root )->right->val ) {
+                    LeftRotation( root );
                 } else {
-                    RightRotation(&((*root)->right));
-                    LeftRotation(root);
+                    RightRotation( &( ( *root )->right ) );
+                    LeftRotation( root );
                 }
             }
             return 1;
