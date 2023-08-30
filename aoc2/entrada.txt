@@ -1,0 +1,4 @@
+/cache_simulator 256 4 1 R 1 bin_100.bin
+/cache_simulator 256 4 1 R 1 bin_1000.bin
+/cache_simulator 256 4 1 R 1 bin_10000.bin
+/cache_simulator 256 4 1 R 1 bin_100000.bin
