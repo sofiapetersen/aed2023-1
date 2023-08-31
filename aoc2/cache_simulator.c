@@ -44,6 +44,7 @@ void missCounters(MissCounters *missCounters);
 int findFIFOIndex(Cache *cache, int index);
 int findLRUIndex(Cache *cache, int index);
 int findReplacementIndex(Cache *cache, ReplacementPolicy policy, int index);
+int getTotalSets(Cache *cache);
 
 int main()
 {
@@ -109,7 +110,7 @@ if (flagOut == 0) {
     printf("Taxa de miss de capacidade = %.2f%%\n", capacidadeRate * 100);
     printf("Taxa de miss de conflito = %.2f%%\n", conflitoRate * 100);
 } else if (flagOut == 1) {
-    printf("%d %.2f %.2f %.2f %.2f %.2f\n", totalAccesses, hitRate, missRate, compulsorioRate, capacidadeRate, conflitoRate);
+    printf("%d %.4f %.4f %.2f %.2f %.2f\n", totalAccesses, hitRate, missRate, compulsorioRate, capacidadeRate, conflitoRate);
 }
 
     printf("\nMisses compulsorios: %d\n", missCounters.compulsorio);
@@ -195,22 +196,38 @@ void readCache(Cache *cache, int address, MissCounters *missCounters, Replacemen
         }
     }
 
-        if (!found) {
-        // Miss compulsório
+if (!found) {
+    if (cache->associativity == 1) {
+        // Mapeamento direto
         missCounters->compulsorio++;
-        if (cache->associativity == 1) {
-            // Mapeamento direto
-            cache->lines[index].valid = 1;
-            cache->lines[index].tag = tag;
+        missCounters->miss++;
+        cache->lines[index].valid = 1;
+        cache->lines[index].tag = tag;
+    } else {
+        // Mapeamento associativo por conjunto ou totalmente associativo
+        int replaceIndex = findReplacementIndex(cache, policy, index);
+
+        if (!cache->lines[replaceIndex].valid) {
+            // Miss compulsório
+            missCounters->compulsorio++;
+        } else if (cache->lines[replaceIndex].tag == tag) {
+            // Substituição, mas não é miss (hit)
+            missCounters->hit++;
         } else {
-            // Encontrar a primeira linha inválida ou aplicar a política de substituição
-            int replaceIndex = findReplacementIndex(cache, policy, index);
-            cache->lines[replaceIndex].valid = 1;
-            cache->lines[replaceIndex].tag = tag;
-            missCounters->miss++; // Incrementa o contador total de misses
+            if (cache->associativity == cache->numSets) {
+                // Cache totalmente associativa, miss de capacidade
+                missCounters->conflito++;
+            } else {
+                // Miss de conflito
+                missCounters->capacidade++;
+            }
         }
 
+        cache->lines[replaceIndex].valid = 1;
+        cache->lines[replaceIndex].tag = tag;
+        missCounters->miss++; // Incrementa o contador total de misses
     }
+}
     (*totalAccesses)++; // Incrementa o contador de acessos
 }
 
@@ -300,4 +317,8 @@ int findFIFOIndex(Cache *cache, int index) {
 int getTagTotalmenteAssociativa(int endereco, int tamanho_bloco) {
     int tag = getTag(endereco, tamanho_bloco, 1); // so um conjunto em cache totalmente associativo
     return tag;
+}
+
+int getTotalSets(Cache *cache) {
+    return cache->numSets;
 }
