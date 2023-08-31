@@ -53,8 +53,8 @@ int main()
     char command[50];
     scanf("%s %d %d %d %s %d %s", command, &nsets, &bsize, &assoc, subst, &flagOut, arquivoEntrada);
 
-    if (strcmp(command, "/cache_simulator") != 0) {
-        printf("Comando inválido. Use o formato /cache_simulator <nsets> <bsize> <assoc> <substituicao> <flag_saida> arquivo_de_entrada\n");
+    if (strcmp(command, "cache_simulator") != 0) {
+        printf("Comando invalido. Use o formato cache_simulator <nsets> <bsize> <assoc> <substituicao> <flag_saida> arquivo_de_entrada\n");
         return 1;
     }
 
@@ -73,7 +73,7 @@ int main()
     } else if (strcmp(subst, "R") == 0) {
         policy = RANDOM;
     } else {
-        printf("Política de substituição inválida.\n");
+        printf("Politica de substituicao invalida.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -95,9 +95,10 @@ int main()
     float hitRate = (float)missCounters.hit / totalAccesses;
     float missRate = (float)missCounters.miss / totalAccesses;
 
-    float compulsorioRate = (float)missCounters.compulsorio / totalAccesses;
-    float conflitoRate = (float)missCounters.conflito / totalAccesses;
-    float capacidadeRate = (float)missCounters.capacidade / totalAccesses;
+    float TotalMisses = (float)missCounters.capacidade + (float)missCounters.compulsorio + (float)missCounters.conflito;
+    float compulsorioRate = (float)missCounters.compulsorio / TotalMisses;
+    float conflitoRate = (float)missCounters.conflito / TotalMisses;
+    float capacidadeRate = (float)missCounters.capacidade / TotalMisses;
 
 if (flagOut == 0) {
     printf("Taxa de hits = %.2f%%\n", hitRate * 100);
@@ -211,6 +212,7 @@ void openFile(Cache *cache, const char *fileName, MissCounters *missCounters, Re
 
     int address;
     while (fread(&address, sizeof(int), 1, inputFile) == 1) {
+        address = __builtin_bswap32(address);// Inverte os bits pois o arquivo está em big endian
         // le um endereço do arquivo binário
         (*totalAccesses)++;  // Incrementa o contador de acessos
         readCache(cache, address, missCounters, policy);  // simula a leitura da cache para o endereço lido
@@ -250,7 +252,7 @@ int findFIFOIndex(Cache *cache, int index) {
     for (int i = index * cache->associativity + 1; i < (index + 1) * cache->associativity; i++) { //percorre a partir da segunda linha do conjunto
         if (cache->lines[i].insertionTime < oldestInsertionTime) {   // se o tempo de inserção da linha atual eh menor do que o do mais antigo 
             oldestIndex = i; //se sim, atualiza o indice pra linha atual
-            oldestInsertionTime = cache->lines[i].insertionTime; //// atualiza a variavel com o tempo de inserção da linha atual
+            oldestInsertionTime = cache->lines[i].insertionTime; // atualiza a variavel com o tempo de inserção da linha atual
         }
     }
 
