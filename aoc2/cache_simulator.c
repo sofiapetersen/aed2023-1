@@ -36,12 +36,14 @@ typedef enum {  //enumera cada um de 0 a 2
 Cache* initializeCache(int num_sets, int block_size, int associativity);
 int getIndex(int address, int block_size, int num_sets);
 int getTag(int address, int block_size, int num_sets);
-void readCache(Cache *cache, int address, MissCounters *missCounters, ReplacementPolicy policy);
+int getTagTotalmenteAssociativa(int endereco, int tamanho_bloco);
+void readCache(Cache *cache, int address, MissCounters *missCounters, ReplacementPolicy policy, int *totalAccesses);
 void freeCache (Cache *cache);
 void openFile(Cache *cache, const char *fileName, MissCounters *missCounters, ReplacementPolicy policy, int *totalAccesses);
 void missCounters(MissCounters *missCounters);
 int findFIFOIndex(Cache *cache, int index);
 int findLRUIndex(Cache *cache, int index);
+int findReplacementIndex(Cache *cache, ReplacementPolicy policy, int index);
 
 int main()
 {
@@ -129,6 +131,7 @@ Cache* initializeCache(int num_sets, int block_size, int associativity){
 
     cache->lines = (CacheLine *)malloc(sizeof(CacheLine) * num_sets * associativity);
     //acessar a linha da cache e alocar o tamanho necessário pra armazenar todas as linhas
+    
 
     for(i = 0; i < num_sets * associativity; i++){      //num_sets * associativity representa o total de linhas da cache
         cache->lines[i].tag = 0;
@@ -158,42 +161,76 @@ int getTag(int address, int block_size, int num_sets) {
     return tag;     //permite q o simulador determine se o bloco esta presente ou ausente na cache numa operacao
 }
 
-void readCache(Cache *cache, int address, MissCounters *missCounters, ReplacementPolicy policy) {
-    int index = getIndex(address, cache->blockSize, cache->numSets);
-    int tag = getTag(address, cache->blockSize, cache->numSets);
 
-    if (cache->lines[index].valid == 0) {
-        missCounters->compulsorio++;
-        cache->lines[index].valid = 1;
-        cache->lines[index].tag = tag;
-        missCounters->miss++;  // Incrementa o contador total de misses
+
+void readCache(Cache *cache, int address, MissCounters *missCounters, ReplacementPolicy policy, int *totalAccesses) {
+    int index, tag;
+    int found = 0; // Flag para indicar se o bloco foi encontrado
+
+        if (cache->associativity == 1) {
+        // Mapeamento direto
+        index = getIndex(address, cache->blockSize, cache->numSets);
+        tag = getTag(address, cache->blockSize, cache->numSets);
+
+            if (cache->lines[index].valid && cache->lines[index].tag == tag) {
+                found = 1; // Bloco encontrado
+                cache->lines[index].accessTime = *totalAccesses; // Atualiza o tempo de acesso (LRU)
+                missCounters->hit++; // Incrementa contador de hits
+            }
     } else {
-        if (cache->lines[index].tag == tag) {
-            missCounters->hit++;  // Incrementa o contador de hits
-        } else {
-            int missType = cache->lines[index].valid ? 0 : 1;
-            if (missType == 0) {
-                missCounters->conflito++;
-            } else if (missType == 1) {
-                missCounters->capacidade++;
-            }
+        // Mapeamento associativo por conjunto
+        index = getIndex(address, cache->blockSize, cache->numSets);
+        tag = getTag(address, cache->blockSize, cache->numSets);
 
-            if (policy == LRU) {
-                int lruIndex = findLRUIndex(cache, index);
-                cache->lines[lruIndex].tag = tag;
-            } else if (policy == FIFO) {
-                int fifoIndex = findFIFOIndex(cache, index);
-                cache->lines[fifoIndex].tag = tag;
-            } else if (policy == RANDOM) {
-                int randomIndex = rand() % cache->associativity;
-                cache->lines[randomIndex].tag = tag;
+        int lineIndex = index * cache->associativity; // Índice da primeira linha do conjunto
+
+        // Verificar se o bloco está em alguma via da cache
+        for (int i = lineIndex; i < lineIndex + cache->associativity; i++) {
+            if (cache->lines[i].valid && cache->lines[i].tag == tag) {
+                found = 1; // Bloco encontrado
+                cache->lines[i].accessTime = *totalAccesses; // Atualiza o tempo de acesso (LRU)
+                missCounters->hit++; // Incrementa contador de hits
+                break; // Não é necessário procurar mais
             }
-            missCounters->miss++;  // Incrementa o contador total de misses
         }
     }
+
+        if (!found) {
+        // Miss compulsório
+        missCounters->compulsorio++;
+        if (cache->associativity == 1) {
+            // Mapeamento direto
+            cache->lines[index].valid = 1;
+            cache->lines[index].tag = tag;
+        } else {
+            // Encontrar a primeira linha inválida ou aplicar a política de substituição
+            int replaceIndex = findReplacementIndex(cache, policy, index);
+            cache->lines[replaceIndex].valid = 1;
+            cache->lines[replaceIndex].tag = tag;
+            missCounters->miss++; // Incrementa o contador total de misses
+        }
+
+    }
+    (*totalAccesses)++; // Incrementa o contador de acessos
 }
 
 
+
+
+int findReplacementIndex(Cache *cache, ReplacementPolicy policy, int index) {
+    int lineIndex = index * cache->associativity;
+    int replaceIndex;
+
+    if (policy == LRU) {
+        replaceIndex = findLRUIndex(cache, index);
+    } else if (policy == FIFO) {
+        replaceIndex = findFIFOIndex(cache, index);
+    } else if (policy == RANDOM) {
+        replaceIndex = lineIndex + rand() % cache->associativity;
+    }
+
+    return replaceIndex;
+}
 
 // pra liberar a cache
 void freeCache (Cache *cache){
@@ -214,8 +251,8 @@ void openFile(Cache *cache, const char *fileName, MissCounters *missCounters, Re
     while (fread(&address, sizeof(int), 1, inputFile) == 1) {
         address = __builtin_bswap32(address);// Inverte os bits pois o arquivo está em big endian
         // le um endereço do arquivo binário
-        (*totalAccesses)++;  // Incrementa o contador de acessos
-        readCache(cache, address, missCounters, policy);  // simula a leitura da cache para o endereço lido
+        //(*totalAccesses)++;  // Incrementa o contador de acessos
+        readCache(cache, address, missCounters, policy, totalAccesses);  // simula a leitura da cache para o endereço lido
     }
 
     fclose(inputFile);  // fecha o arquivo após a leitura
@@ -257,4 +294,10 @@ int findFIFOIndex(Cache *cache, int index) {
     }
 
     return oldestIndex - index * cache->associativity; ///retorna o indice da linha mais antiga no conjunto
+}
+
+
+int getTagTotalmenteAssociativa(int endereco, int tamanho_bloco) {
+    int tag = getTag(endereco, tamanho_bloco, 1); // so um conjunto em cache totalmente associativo
+    return tag;
 }
