@@ -165,72 +165,92 @@ int getTag(int address, int block_size, int num_sets) {
 
 
 void readCache(Cache *cache, int address, MissCounters *missCounters, ReplacementPolicy policy, int *totalAccesses) {
-    int index, tag;
-    int found = 0; // Flag para indicar se o bloco foi encontrado
+    int index = getIndex(address, cache->blockSize, cache->numSets);
+    int tag = getTag(address, cache->blockSize, cache->numSets);
+    int lineIndex = index * cache->associativity;
+    int hitIndex = -1; // indice da linha que vai ter hit (-1 aqui para indicar um miss)
 
-        if (cache->associativity == 1) {
-        // Mapeamento direto
-        index = getIndex(address, cache->blockSize, cache->numSets);
-        tag = getTag(address, cache->blockSize, cache->numSets);
-
-            if (cache->lines[index].valid && cache->lines[index].tag == tag) {
-                found = 1; // Bloco encontrado
-                cache->lines[index].accessTime = *totalAccesses; // Atualiza o tempo de acesso (LRU)
-                missCounters->hit++; // Incrementa contador de hits
-            }
-    } else {
-        // Mapeamento associativo por conjunto
-        index = getIndex(address, cache->blockSize, cache->numSets);
-        tag = getTag(address, cache->blockSize, cache->numSets);
-
-        int lineIndex = index * cache->associativity; // Índice da primeira linha do conjunto
-
-        // Verificar se o bloco está em alguma via da cache
-        for (int i = lineIndex; i < lineIndex + cache->associativity; i++) {
-            if (cache->lines[i].valid && cache->lines[i].tag == tag) {
-                found = 1; // Bloco encontrado
-                cache->lines[i].accessTime = *totalAccesses; // Atualiza o tempo de acesso (LRU)
-                missCounters->hit++; // Incrementa contador de hits
-                break; // Não é necessário procurar mais
-            }
+    for (int i = 0; i < cache->associativity; i++) {
+        if (cache->lines[lineIndex + i].valid && cache->lines[lineIndex + i].tag == tag) {
+            hitIndex = i;
+            break; // se for hit sai do loop
         }
     }
 
-if (!found) {
-    if (cache->associativity == 1) {
-        // Mapeamento direto
-        missCounters->compulsorio++;
-        missCounters->miss++;
-        cache->lines[index].valid = 1;
-        cache->lines[index].tag = tag;
+    if (hitIndex != -1) {
+        // Hit
+        missCounters->hit++;
+        
+        // Atualiza o tempo de acesso da linha atingida para o valor mais recente
+        if (policy == LRU) {
+            cache->lines[lineIndex + hitIndex].accessTime = (*totalAccesses);
+            
+            // Atualiza o tempo de acesso das outras linhas do conjunto
+            for (int i = lineIndex; i < lineIndex + cache->associativity; i++) {
+                if (i != (lineIndex + hitIndex)) {
+                    cache->lines[i].accessTime++;
+                }
+            }
+        }
     } else {
-        // Mapeamento associativo por conjunto ou totalmente associativo
-        int replaceIndex = findReplacementIndex(cache, policy, index);
+        // Miss
+        missCounters->miss++;
 
-        if (!cache->lines[replaceIndex].valid) {
-            // Miss compulsório
-            missCounters->compulsorio++;
-        } else if (cache->lines[replaceIndex].tag == tag) {
-            // Substituição, mas não é miss (hit)
-            missCounters->hit++;
+        // - Compulsório: O bloco nunca foi carregado na cache
+        // - Capacidade: A cache está cheia, mas o bloco não está nela
+        // - Conflito: O bloco não está na cache devido a uma colisão de conjunto
+
+        int emptyLineIndex = -1; // indice de uma linha vazia na cache
+        int replaceIndex = -1;   // indice da linha para substituição
+
+        for (int i = lineIndex; i < lineIndex + cache->associativity; i++) {
+            if (!cache->lines[i].valid) {
+                emptyLineIndex = i;
+                break;
+            }
+        }
+
+        if (emptyLineIndex != -1) {
+            missCounters->compulsorio++; // cache miss compulsório: há uma linha vazia na cache
+
+            replaceIndex = emptyLineIndex;
         } else {
-            if (cache->associativity == cache->numSets) {
-                // Cache totalmente associativa, miss de capacidade
+            // miss de capacidade ou conflito
+            replaceIndex = findReplacementIndex(cache, policy, index); // Encontre uma linha para substituir
+
+            // se o bloco que será substituído é da mesma "conjunto" (mesmo índice) que o novo bloco
+            // se for o mesmo "conjunto", é um miss de conflito
+            // se não, é um miss de capacidade
+
+            if (getIndex(cache->lines[replaceIndex].lastAccessedAddress, cache->blockSize, cache->numSets) == index) {
                 missCounters->conflito++;
             } else {
-                // Miss de conflito
                 missCounters->capacidade++;
             }
         }
 
+        // Substituir a linha
         cache->lines[replaceIndex].valid = 1;
         cache->lines[replaceIndex].tag = tag;
-        missCounters->miss++; // Incrementa o contador total de misses
-    }
-}
-    (*totalAccesses)++; // Incrementa o contador de acessos
-}
+        cache->lines[replaceIndex].lastAccessedAddress = address;
 
+        if (policy == LRU) {
+            // Atualiza o tempo de acesso da linha atual para o valor mais recente
+            cache->lines[replaceIndex].accessTime = (*totalAccesses);
+
+            // Atualiza o tempo de acesso das outras linhas do conjunto
+            for (int i = lineIndex; i < lineIndex + cache->associativity; i++) {
+                if (i != replaceIndex) {
+                    cache->lines[i].accessTime++;
+                }
+            }
+        } else if (policy == FIFO) {
+            // Atualiza o tempo de inserção da linha atual para o valor mais recente
+            cache->lines[replaceIndex].insertionTime = (*totalAccesses);
+        }
+    }
+    (*totalAccesses)++;
+}
 
 
 
