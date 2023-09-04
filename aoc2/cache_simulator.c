@@ -43,7 +43,6 @@ void missCounters(MissCounters *missCounters);
 int findFIFOIndex(Cache *cache, int index);
 int findLRUIndex(Cache *cache, int index);
 int findReplacementIndex(Cache *cache, ReplacementPolicy policy, int index);
-int getTotalSets(Cache *cache);
 
 int main()
 {
@@ -329,9 +328,4 @@ int findFIFOIndex(Cache *cache, int index) {
     }
 
     return oldestIndex - index * cache->associativity; //retorna o indice da linha mais antiga no conjunto
-}
-
-
-int getTotalSets(Cache *cache) {
-    return cache->numSets;
 }
