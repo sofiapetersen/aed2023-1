@@ -36,7 +36,6 @@ typedef enum {  //enumera cada um de 0 a 2
 Cache* initializeCache(int num_sets, int block_size, int associativity);
 int getIndex(int address, int block_size, int num_sets);
 int getTag(int address, int block_size, int num_sets);
-int getTagTotalmenteAssociativa(int endereco, int tamanho_bloco);
 void readCache(Cache *cache, int address, MissCounters *missCounters, ReplacementPolicy policy, int *totalAccesses);
 void freeCache (Cache *cache);
 void openFile(Cache *cache, const char *fileName, MissCounters *missCounters, ReplacementPolicy policy, int *totalAccesses);
@@ -56,7 +55,7 @@ int main()
     char command[50];
     scanf("%s %d %d %d %s %d %s", command, &nsets, &bsize, &assoc, subst, &flagOut, arquivoEntrada);
 
-    if (strcmp(command, "cache_simulator") != 0) {
+    if (strcmp(command, "/cache_simulator") != 0) {
         printf("Comando invalido. Use o formato cache_simulator <nsets> <bsize> <assoc> <substituicao> <flag_saida> arquivo_de_entrada\n");
         return 1;
     }
@@ -288,7 +287,6 @@ void openFile(Cache *cache, const char *fileName, MissCounters *missCounters, Re
     while (fread(&address, sizeof(int), 1, inputFile) == 1) {
         address = __builtin_bswap32(address);// Inverte os bits pois o arquivo está em big endian
         // le um endereço do arquivo binário
-        //(*totalAccesses)++;  // Incrementa o contador de acessos
         readCache(cache, address, missCounters, policy, totalAccesses);  // simula a leitura da cache para o endereço lido
     }
 
@@ -330,14 +328,9 @@ int findFIFOIndex(Cache *cache, int index) {
         }
     }
 
-    return oldestIndex - index * cache->associativity; ///retorna o indice da linha mais antiga no conjunto
+    return oldestIndex - index * cache->associativity; //retorna o indice da linha mais antiga no conjunto
 }
 
-
-int getTagTotalmenteAssociativa(int endereco, int tamanho_bloco) {
-    int tag = getTag(endereco, tamanho_bloco, 1); // so um conjunto em cache totalmente associativo
-    return tag;
-}
 
 int getTotalSets(Cache *cache) {
     return cache->numSets;
