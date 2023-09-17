@@ -1,0 +1,154 @@
+Dr. Memory version 2.5.0 build 0 built on Oct 18 2021 03:10:43
+Windows version: WinVer=105;Rel=2009;Build=19045;Edition=Enterprise
+Dr. Memory results for pid 7080: "SofiaPetersen.exe"
+Application cmdline: "D:\CC\aed2023-1\output\SofiaPetersen.exe"
+Recorded 124 suppression(s) from default C:\Program Files (x86)\Dr. Memory\bin\suppress-default.txt
+
+Error #1: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x20e    (0x75eaa0ae <KERNELBASE.dll+0x11a0ae>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x75eac984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.530 in thread 1200
+Note: instruction: cmp    %eax $0x0000001a
+
+Error #2: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x23b    (0x75eaa0db <KERNELBASE.dll+0x11a0db>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x75eac984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.533 in thread 1200
+Note: instruction: data16 mov    %cx -> 0x00000234(%ebx,%eax,2)
+
+Error #3: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x1ca    (0x75eaa06a <KERNELBASE.dll+0x11a06a>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x75eac984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.555 in thread 1200
+Note: instruction: cmp    %eax $0x00000206
+
+Error #4: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x1fd    (0x75eaa09d <KERNELBASE.dll+0x11a09d>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x75eac984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.557 in thread 1200
+Note: instruction: data16 mov    %cx -> 0x2c(%ebx,%eax,2)
+
+Error #5: UNINITIALIZED READ: reading 0x00e911b0-0x00e911b4 4 byte(s)
+# 0 KERNELBASE.dll!FindNextFileW                   +0x24e    (0x75eaa0ee <KERNELBASE.dll+0x11a0ee>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x75eac984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.559 in thread 1200
+Note: instruction: test   0x38(%edi) $0x00000400
+
+Error #6: UNINITIALIZED READ: reading register eax
+# 0 ntdll.dll!RtlUnicodeToMultiByteN               +0x51     (0x77530e91 <ntdll.dll+0x60e91>)
+# 1 ntdll.dll!RtlUnicodeStringToAnsiString         +0x68     (0x77530dc9 <ntdll.dll+0x60dc9>)
+# 2 KERNELBASE.dll!FindNextFileA                   +0x87     (0x75eac9d8 <KERNELBASE.dll+0x11c9d8>)
+# 3 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 5 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 6 .text            
+# 7 mainCRTStartup   
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 9 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.562 in thread 1200
+Note: instruction: mov    (%eax,%esi) -> %al
+
+Error #7: UNINITIALIZED READ: reading register eax
+# 0 ntdll.dll!RtlUnicodeToMultiByteN               +0x51     (0x77530e91 <ntdll.dll+0x60e91>)
+# 1 ntdll.dll!RtlUnicodeStringToAnsiString         +0x68     (0x77530dc9 <ntdll.dll+0x60dc9>)
+# 2 KERNELBASE.dll!FindNextFileA                   +0xcc     (0x75eaca1d <KERNELBASE.dll+0x11ca1d>)
+# 3 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 5 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 6 .text            
+# 7 mainCRTStartup   
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 9 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.568 in thread 1200
+Note: instruction: mov    (%eax,%esi) -> %al
+
+Error #8: UNINITIALIZED READ: reading register eax
+# 0 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 1 __mingw_readdir                                 [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.570 in thread 1200
+Note: instruction: cmp    %eax $0x00000010
+
+Error #9: UNINITIALIZED READ: reading register eax
+# 0 KERNELBASE.dll!FindNextFileW                   +0x167    (0x75eaa007 <KERNELBASE.dll+0x11a007>)
+# 1 KERNELBASE.dll!FindNextFileA                   +0x33     (0x75eac984 <KERNELBASE.dll+0x11c984>)
+# 2 .text                                           [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 3 __mingw_glob                                    [../../../src/gcc-6.3.0/libgcc/config/i386/cygwin.S:184]
+# 4 _setargv                                        [d:/CC/aed2023-1/SofiaPetersen.c:156]
+# 5 .text            
+# 6 mainCRTStartup   
+# 7 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0x11d    (0x77537b1e <ntdll.dll+0x67b1e>)
+# 8 ntdll.dll!RtlGetAppContainerNamedObjectPath    +0xed     (0x77537aee <ntdll.dll+0x67aee>)
+Note: @0:00:00.571 in thread 1200
+Note: instruction: test   %eax %eax
+
+===========================================================================
+FINAL SUMMARY:
+
+DUPLICATE ERROR COUNTS:
+	Error #   1:     13
+	Error #   2:      5
+	Error #   3:     12
+	Error #   4:     12
+	Error #   5:     12
+	Error #   6:    172
+	Error #   7:     96
+	Error #   8:     12
+	Error #   9:     11
+
+SUPPRESSIONS USED:
+
+ERRORS FOUND:
+      0 unique,     0 total unaddressable access(es)
+      9 unique,   345 total uninitialized access(es)
+      0 unique,     0 total invalid heap argument(s)
+      0 unique,     0 total GDI usage error(s)
+      0 unique,     0 total handle leak(s)
+      0 unique,     0 total warning(s)
+      0 unique,     0 total,      0 byte(s) of leak(s)
+      0 unique,     0 total,      0 byte(s) of possible leak(s)
+ERRORS IGNORED:
+      6 unique,     6 total,   4427 byte(s) of still-reachable allocation(s)
+         (re-run with "-show_reachable" for details)
+Details: C:\Users\User\AppData\Roaming\Dr. Memory\DrMemory-SofiaPetersen.exe.7080.000\results.txt
